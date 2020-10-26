@@ -1,7 +1,7 @@
 const {app, BrowserWindow, Tray} = require('electron');
 // const app = electron.app;
 // const BrowserWindow = electron.BrowserWindow;
-
+const test = 'test'
 const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');

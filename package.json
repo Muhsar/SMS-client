@@ -54,13 +54,13 @@
   },
   "scripts": {
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
+    "build": "react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
     "windows": "electron-builder --windows",
     "electron-build": "electron-builder --linux deb",
     "fullbuild":"yarn run windows && yarn run electron-build",
-    "build": "yarn run react-build && yarn run electron-build",
+    "allbuild": "yarn run build && yarn run electron-build",
     "desktop": "wait-on http://localhost:3000 && electron .",
     "start": "concurrently \"BROWSER=none yarn run react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
