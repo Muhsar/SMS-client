@@ -20,7 +20,7 @@ class News extends Component {
   componentDidMount() {
       this.props.getNews()
       const decode = jwt_decode(localStorage.token)
-  let server = "http://localhost:5000";
+  let server = "https://schmanagerserver.herokuapp.com/";
   const school_id = decode.school_id
   this.socket = io(server, {query:{school_id}});
   

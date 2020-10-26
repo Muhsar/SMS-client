@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode'
 import 'react-toastify/dist/ReactToastify.css'
 export const ptfNotifications=()=>{
 
-            const server = 'http://localhost:5000'
+            const server = 'https://schmanagerserver.herokuapp.com/'
             // const decode = jwt_decode(localStorage.token)
             // const ID = decode.school_id
             
