@@ -31,11 +31,20 @@ class TopNav extends Component {
                   <i className="far fa-sm fa-home-alt"></i> Home
                 </Link>
               </li>
-              <li class="nav-item">
+              {
+        decode.type==='student' ?
+        <li class="nav-item">
+                <Link to='/result' class="nav-link nav-link-icon">
+                  <i className="far fa-sm fa-list-alt"></i> Results
+                </Link>
+              </li>
+        :
+        <li class="nav-item">
                 <Link to='/students' class="nav-link nav-link-icon">
                   <i className="far fa-sm fa-user-graduate"></i> Students
                 </Link>
               </li>
+      }
 { decode.type==='owner' ?
               <li class="nav-item">
                 <Link to='/teachers' class="nav-link nav-link-icon">
@@ -62,11 +71,30 @@ class TopNav extends Component {
                   <i className="far fa-sm fa-comment-alt-dots"></i> PTF
                 </Link>
               </li>
-              <li class="nav-item">
+             
+              {
+          decode.type==='student'?
+          <li class="nav-item">
+                <Link to='/receipt' class="nav-link nav-link-icon">
+                  <i className="far fa-sm fa-receipt"></i> Receipts
+                </Link>
+              </li>
+        :
+        <li class="nav-item">
                 <Link to='/debt' class="nav-link nav-link-icon">
                   <i className="far fa-sm fa-money-bill-wave-alt"></i> Fee Management
                 </Link>
               </li>
+        }
+                {
+          decode.type!=='student' ? null :
+          <li class="nav-item">
+          <Link to='/progress' class="nav-link nav-link-icon">
+            <i className="far fa-sm fa-stopwatch"></i> Daily Progress
+          </Link>
+        </li>
+           
+        }
               <li class="nav-item">
                 <Link class="nav-link nav-link-icon" onClick={this.logOut}>
                   <i className="far fa-sm fa-sign-out-alt"></i> Log Out

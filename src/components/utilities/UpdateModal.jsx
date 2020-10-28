@@ -1166,3 +1166,71 @@ export const SchoolUpdate=({submit,
       </form>
   )
 }
+export const StudentAttendance=({student,progress})=>{
+return(
+  <div class="modal modal-dark fade" 
+                  id="studentAttendance" 
+                  tabindex="-1" 
+                  role="dialog" 
+                  aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                          <div className="modal-header">
+                          <div class="row align-items-center">
+                <div class="media mt-4 align-items-center mx-auto">
+                
+                  <img alt="" src={progress ? progress.image : null} class="avatar avatar-lg"/>
+                  <div class="media-body pl-3">
+                  <div class="text-lg text-center my-0">{progress ? progress.fullName : null}</div>
+                  <div class="text-lg text-center my-0">{progress ? progress.schoolName : null}</div>
+                  <div class="text-lg text-center my-0">{progress ? progress.clas : null}</div>
+                  </div>
+                </div>
+                </div>
+                          </div>
+    <div class="modal-body">
+    <div className="table-responsive">
+                            <table className="table align-items-center">
+                                <thead>
+                                    <tr>
+                                        <th scope='col'>Date</th>
+                                        <th scope='col'>Attendance</th>
+                                        <th scope='col'>No. Of Assignments Given</th>
+                                        <th scope='col'>No. Of Assignments Done</th>
+                                        <th scope='col'>Incomplete Assignments</th>
+                                        <th scope='col'>Behaviour</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        progress ? progress.attendance ?
+                                        progress.attendance.map(progress=>{
+                                            return(
+                                            <tr>
+                                                <td>{progress.day}/{progress.month}/{progress.year}</td>
+                                        <td>{progress.attendance}</td>
+                                        <td>{progress.allAssignment}</td>
+                                        <td>{progress.assignmentDone}</td>
+                                        <td>{progress.incompleteAssignment}</td>
+                                        <td>{progress.behaviour}</td>
+                                    </tr>
+)
+                                        })
+                                    : null : null
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/> <hr/>
+                        {
+                          decode.type!=='teacher' ? null :
+                          <form>
+                              
+                          </form>
+                        }
+    </div>
+    </div>
+    </div>
+    </div>
+)
+}

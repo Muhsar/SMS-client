@@ -34,6 +34,9 @@ class Dashboard extends Component {
                 this.props.getStudents()
                 this.props.getStudentBill()
             }
+            if(decode.type==='student'){
+                
+            }
      
         }
         axios.get(`${decode.type==='teacher' ? TeacherServer : ParentServer}/`)

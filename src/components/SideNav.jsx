@@ -41,7 +41,7 @@ export default class sidenav extends Component {
                         </h1>
                 </div>
                 :
-            <img alt="" src={decode.image} class="card-profile-image avatar rounded-circle shadow hover-shadow-lg"/>
+            <img alt="" src={decode.image} class="card-profile-image avatar avatar-xl rounded-circle shadow hover-shadow-lg"/>
             }
             </>
             }
@@ -75,6 +75,8 @@ export default class sidenav extends Component {
             </a>
           </div>
         </div>
+        {
+          decode.type==='owner'?
         <div className="w-100 mt-4 actions d-flex justify-content-between">
           <Link to="/teachers" className="action-item action-item-lg text-white pl-0">
             <i className="far fa-user-tie"></i>
@@ -86,16 +88,27 @@ export default class sidenav extends Component {
             <i className="far fa-user-graduate"></i>
           </Link>
         </div>
+        : null
+        }
       </div>
       <div className="nav-application clearfix">
         <NavLink to="/profile" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-home fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">Home</span>
         </NavLink>
+        {
+        decode.type==='student' ?
+        <NavLink to="/result" className="btn btn-square text-sm">
+          <span className="btn-inner--icon d-block"><i className="far fa-list-alt fa-2x"></i></span>
+          <span className="btn-inner--icon d-block pt-2">Results</span>
+        </NavLink>
+        :
         <NavLink to="/students" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-user-graduate fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">Students</span>
         </NavLink>
+      }
+        
 { decode.type==='owner' ?
         <NavLink to="/teachers" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-user-tie fa-2x"></i></span>
@@ -118,10 +131,25 @@ export default class sidenav extends Component {
           <span className="btn-inner--icon d-block"><i className="far fa-comment-alt-dots fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">PTF</span>
         </NavLink>
+        {
+          decode.type==='student'?
+          <NavLink to="/receipt" className="btn btn-square text-sm">
+          <span className="btn-inner--icon d-block"><i className="far fa-receipt fa-2x"></i></span>
+          <span className="btn-inner--icon d-block pt-2">Receipts</span>
+        </NavLink>
+        :
         <NavLink to="/debt" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-money-bill-wave-alt fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">Fee Management</span>
         </NavLink>
+        }
+        {
+          decode.type!=='student' ? null :
+           <NavLink to="/progress" className="btn btn-square text-sm">
+           <span className="btn-inner--icon d-block"><i className="far fa-stopwatch fa-2x"></i></span>
+           <span className="btn-inner--icon d-block pt-2">Daily Progress</span>
+         </NavLink>
+        }
         <Link type='button' onClick={this.logOut} className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-sign-out-alt fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">Log Out</span>

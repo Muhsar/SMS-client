@@ -55,7 +55,9 @@ import { Loading,
      Sss3,
      Typing,
      DeleteResult,
-     AddResult
+     AddResult,
+     AddAttendance,
+     GetAttendance
     } from './types';
     import jwt_decode from 'jwt-decode'
     const decode = localStorage.token ? jwt_decode(localStorage.token) : null
@@ -678,4 +680,18 @@ export const teacherDetail = (id) => (dispatch) => {
         payload:id
       }))
     }
-    
+export const addAttendance=(attendance)=>dispatch=>{
+  axios.post(`${TeacherServer}/attendance`,attendance)
+  .then(res=>dispatch({
+    type:AddAttendance,
+    payload:res.data.progress,
+    msg:res.data.msg
+  }))
+}
+export const getAttendance=(id)=>dispatch=>{
+  axios.get(`${TeacherServer}/attendance/${id}`)
+  .then(res=>dispatch({
+    type:GetAttendance,
+    payload:res.data
+  }))
+}

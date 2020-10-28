@@ -10,7 +10,10 @@
     "appId": "com.electron.sms.app",
     "linux": {
       "category": "Education",
-      "icon": "build/icons"
+      "icon": "build/icons",
+      "target":[
+        "deb"
+      ]
     },
     "win": {
       "icon": "build/icons/icon.png"
@@ -58,8 +61,10 @@
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
     "windows": "electron-builder --windows",
+    "mac": "electron-builder --mac",
     "electron-build": "electron-builder --linux deb",
-    "fullbuild":"yarn run windows && yarn run electron-build",
+    "test-build": "electron-builder -mwl",
+    "fullbuild":"yarn run windows && yarn run electron-build && yarn run mac",
     "allbuild": "yarn run build && yarn run fullbuild",
     "desktop": "wait-on http://localhost:3000 && electron .",
     "start": "concurrently \"BROWSER=none yarn run react-start\" \"wait-on http://localhost:3000 && electron .\""

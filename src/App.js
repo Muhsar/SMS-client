@@ -15,6 +15,9 @@ import { ptfNotifications } from './notification';
 import PTF from './components/PTF';
 import Profile from './components/Profile';
 import DebtManagement from './components/DebtManagement';
+import Results from './components/Results';
+import Receipts from './components/Receipts';
+import Attendance from './components/Attendance';
 export default class App extends Component {
   UNSAFE_componentWillMount() {
     // localStorage.removeItem('token')
@@ -56,9 +59,13 @@ render() {
     const parent=(
       <Switch>
         
-        <Route exact path ='/' component={PTF}/>
+        <Route exact path ='/' component={Dashboard}/>
+        <Route exact path ='/profile' component={Dashboard}/>
         <Route  path='/news' component={News}/>
+        <Route  path='/result' component={Results}/>
+        <Route  path='/receipt' component={Receipts}/>
         <Route  path='/ptf' component={PTF}/>
+        <Route  path='/progress' component={Attendance}/>
       </Switch>
     )
     const owner=(
@@ -74,7 +81,7 @@ render() {
           <Route path='/debt' component={DebtManagement}/>
           </Switch>
 )
-const userRoutes = localStorage.token ? decode.type==='owner' ? owner : decode.type==='parent' ? parent : teacher : null
+const userRoutes = localStorage.token ? decode.type==='owner' ? owner : decode.type==='student' ? parent : teacher : null
     return (
       <div className="application application-offset ready sidenav-pinned" style={{backgroundColor:localStorage.token ? decode.color==='no color' ? '#6e30ff' : decode.color : '#6e30ff',height:'430px'}}>
         <div className='container-fluid container-application'>

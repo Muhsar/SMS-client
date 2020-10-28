@@ -15,6 +15,7 @@ import studentBillDetail from './studentBillDetail'
 import getResult from './getResult'
 import debts from './feeManagement'
 import typing from './typing'
+import progress from './Attendance'
 export default combineReducers({
   teachers:getTeachers,
   students:getStudents,
@@ -31,5 +32,6 @@ export default combineReducers({
   debtor:studentBillDetail,
   result:getResult,
   debts,
-  typing:typing
+  typing:typing,
+  progress
 })
