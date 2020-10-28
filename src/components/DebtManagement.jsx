@@ -20,16 +20,20 @@ import {
     sss1Debt,
     sss2Debt,
     sss3Debt,
-    allReceipt
+    allReceipt,
+    getStudentBill
  } from '../actions/actions';
 import TopNav from './TopNav';
 import LineChart from './Charts/Line'
 import BarChart from './Charts/Bar';
-import { InvoiceManagement, ListManagement, ManagementNavs, TableManagement } from './utilities/Cards';
+import { InvoiceManagement, ListManagement, ManagementNavs, TableManagement, TeacherTableManagement } from './utilities/Cards';
 import CountUp from 'react-countup';
+import { TeacherBarChart } from './Charts/BarTeacher';
+import { TeacherLineChart } from './Charts/LineTeacher';
 export class DebtManagement extends Component {
 componentWillMount(){
     const decode = jwt_decode(localStorage.token)
+    if(decode.type==='owner'){
     this.props.allReceipt()
     if(decode.clas==='Primary'){
         this.props.crecheDebt()
@@ -71,6 +75,9 @@ componentWillMount(){
         this.props.sss2Debt()
         this.props.sss3Debt()
     }
+}else{
+  this.props.getStudentBill()
+}
 }
 render() {
     const {receipt} = this.props.receipt
@@ -180,6 +187,10 @@ render() {
               {clas:'Basic5',paid:b5p,debtor:b5d},
               {clas:'Basic6',paid:b6p,debtor:b6d}
           ]
+          const {studentBill} = this.props.studentBill
+          const array = [...studentBill]
+          console.log(array.map(student=>student.amountPaid))
+          console.log([1,2])
 return (
             <div className="main-content position-relative">
                 <TopNav/>
@@ -245,6 +256,8 @@ return (
                     <div className="card-body">
                 <div class="tab-content">
   <div class="tab-pane container active" id="line">
+{
+  decode.type==='owner' ?
                             <LineChart
                             cd={cd}
                             cp={cp}
@@ -281,8 +294,13 @@ return (
                             s3d={s3d} 
                             s3p={s3p} 
                             />
+                            : 
+                            <TeacherLineChart students={array}/>
+}
                         </div>
                         <div class="tab-pane container fade" id="bar"> 
+{
+  decode.type==='owner' ?
                         <BarChart
                             cd={cd}
                             cp={cp}
@@ -319,10 +337,20 @@ return (
                             s3d={s3d} 
                             s3p={s3p} 
                             />
+                            : 
+                            <TeacherBarChart students={array}/>
+}
                         </div>
                         <div className="tab-pane container fade" id="table">
+                        {
+  decode.type==='owner' ?
                             <TableManagement data={data}/>
+                        :
+                        <TeacherTableManagement students={studentBill}/>
+                          }
                         </div>
+                        {
+  decode.type==='owner' ?
                         <div className="tab-pane container fade" id="payment">
                             <div className="card">
                                 <div className="card-header">
@@ -353,6 +381,8 @@ return (
                                     </div>
                                 </div>
                         </div>
+                        : null
+                        }
                     </div>
                 </div>
             </div>
@@ -381,12 +411,15 @@ DebtManagement.propTypes={
     sss3Debt:PropTypes.func.isRequired,
     debts:PropTypes.object.isRequired,
     receipt:PropTypes.object.isRequired,
-    allReceipt:PropTypes.func.isRequired
+    allReceipt:PropTypes.func.isRequired,
+    getStudentBill:PropTypes.func.isRequired,
+    studentBill:PropTypes.object.isRequired
 }
 const mapStateToProps = (state) => {
     return{
         debts:state.debts,
-        receipt:state.receipt
+        receipt:state.receipt,
+        studentBill:state.studentBill
     }
 }
 export default connect(mapStateToProps, {
@@ -407,5 +440,6 @@ export default connect(mapStateToProps, {
     sss1Debt,
     sss2Debt,
     sss3Debt,
-    allReceipt
+    allReceipt,
+    getStudentBill
 })(DebtManagement)

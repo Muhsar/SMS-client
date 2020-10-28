@@ -27,12 +27,48 @@ export default class sidenav extends Component {
       </div>
       <div className="sidenav-user d-flex flex-column align-items-center justify-content-between text-center">
         <div>
-          <Link to='/profile' className="avatar  avatar-xl">
-            <img alt="" src={decode.logo} className=""/>
+          <Link to='/' className="avatar  avatar-xl">
+            {
+              decode.type==='owner' ?
+              <img alt="" src={decode.logo} className=""/>
+              :
+              <>
+              {
+                decode.image==='no image' ? 
+                <div className="card-profile-image avatar avatar-xl bg-primary rounded-circle shadow hover-shadow-lg">
+                    <h1 className='text-white'>
+                        {decode.surname.slice(0,1)}{decode.name.slice(0,1)}
+                        </h1>
+                </div>
+                :
+            <img alt="" src={decode.image} class="card-profile-image avatar rounded-circle shadow hover-shadow-lg"/>
+            }
+            </>
+            }
           </Link>
           <div className="mt-4">
-            <h5 className="mb-0 text-white">{decode.schoolName}</h5>
-            <span className="d-block text-sm text-white opacity-8 mb-3">{decode.school_id}</span>
+            <h5 className="mb-0 text-white">
+              {
+              decode.type==='owner' 
+              ? 
+              decode.schoolName 
+              : 
+              (decode.surname+' '+decode.name)
+              }
+              </h5>
+            <span className="d-block text-sm text-white opacity-8 mb-3">
+              {
+            decode.type==='owner' 
+            ? 
+            decode.school_id 
+            : 
+            decode.type==='teacher' 
+            ? 
+            decode.teacher_id 
+            : 
+            decode.student_id
+            }
+            </span>
             <a href="#" className="btn btn-sm btn-white btn-icon rounded-pill shadow hover-translate-y-n3">
               <span className="btn-inner--icon"><i className="far fa-user-graduate"></i></span>
               <span className="btn-inner--text">{decode.clas}</span>
@@ -60,18 +96,24 @@ export default class sidenav extends Component {
           <span className="btn-inner--icon d-block"><i className="far fa-user-graduate fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">Students</span>
         </NavLink>
+{ decode.type==='owner' ?
         <NavLink to="/teachers" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-user-tie fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">Teachers</span>
         </NavLink>
+        : null
+}
         <NavLink to="/news" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-newspaper fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">News</span>
         </NavLink>
+{ decode.type==='owner' ?
         <NavLink to="/bills" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-money-bill fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">Bills</span>
         </NavLink>
+        : null
+}        
         <NavLink to="/ptf" className="btn btn-square text-sm">
           <span className="btn-inner--icon d-block"><i className="far fa-comment-alt-dots fa-2x"></i></span>
           <span className="btn-inner--icon d-block pt-2">PTF</span>

@@ -24,7 +24,9 @@ getStudents,
 getReceipt,
 firstTerm,
 secondTerm,
-thirdTerm
+thirdTerm,
+addResult,
+deleteResult
  } from '../actions/actions';
 import { StudentInfo } from './utilities/Details';
 import { Link } from 'react-router-dom';
@@ -46,7 +48,6 @@ class Students extends Component {
     email:'',
     number:'',
     paddress:'',
-    msg:'',
     amountPaid:0,
     modal:false,
     up:false,
@@ -54,7 +55,15 @@ class Students extends Component {
     classChange:false,
     image: 'no image',
     payment:false,
-    dataSort:'asc'
+    dataSort:'asc',
+    term:'',
+    subject:'',
+    test:'',
+    exam:'',
+    total:'',
+    grade:'',
+    remarks:'',
+    msg:''
   }
   componentDidMount() {
     this.props.getStudents();
@@ -95,7 +104,8 @@ class Students extends Component {
       feeStatus:(this.state.amountPaid===classBill.fees)?'paid':'debtor',
       fees:classBill.fees,
       paidAmount: this.state.amountPaid,
-      image:this.state.image
+      image:this.state.image,
+      color:decode.color
     }
     this.props.addStudent(student)
     this.handleToggle()
@@ -132,16 +142,19 @@ class Students extends Component {
     this.props.firstTerm(id)
     this.props.studentDetail(id)
     this.props.getStudents()
+    this.setState({term:'1stTerm'})
   }
   openSecondTerm=id=>{
     this.props.studentDetail(id)
     this.props.secondTerm(id)
     this.props.getStudents()
+    this.setState({term:'2ndTerm'})
   }
   openThirdTerm=id=>{
     this.props.studentDetail(id)
     this.props.thirdTerm(id)
     this.props.getStudents()
+    this.setState({term:'3rdTerm'})
   }
   openUpdateModal=(id)=>{
     axios.get(`${OwnerServer}/student/`+id)
@@ -275,6 +288,59 @@ class Students extends Component {
     this.setState({dataSort:this.state.dataSort==='asc' ? 'desc' : 'asc'})
     console.log(this.state.dataSort)
   }
+  handleTest=e=> {
+    this.setState({test:e.target.value,total:(Number(e.target.value)+Number(this.state.exam))})
+  }
+  handleExam=e=> {
+    this.setState({exam:e.target.value,total:(Number(e.target.value)+Number(this.state.test))})
+  }
+
+  uploadResult=e=> {
+    e.preventDefault()
+    const {student} = this.props.student
+    const newResult = {
+      term:this.state.term,
+      subject:this.state.subject,
+      test:Number(this.state.test),
+      exam:Number(this.state.exam),
+      total:this.state.total,
+      grade:this.state.grade,
+      remarks:this.state.remarks,
+      student_id:student.student_id
+    }
+    if(this.state.total===''){
+      this.setState({msg:"total result is not a number or can't be empty"})
+    } else{
+    this.props.addResult(newResult)
+    if(this.state.term==='1stTerm'){
+      this.props.firstTerm(newResult.student_id)
+      this.props.studentDetail(newResult.student_id)
+    }
+    else if(this.state.term==='2ndTerm'){
+      this.props.secondTerm(newResult.student_id)
+      this.props.studentDetail(newResult.student_id)
+    }
+    else{
+      this.props.thirdTerm(newResult.student_id)
+      this.props.studentDetail(newResult.student_id)
+    }
+    this.setState({
+      subject:'',
+      test:'',
+      exam:'',
+      total:'',
+      grade:'Grade',
+      remarks:'Remarks'
+    })
+
+  }
+  }
+  deleteResult=(id)=>{
+    this.props.deleteResult(id)
+  }
+  toggleDelete=()=> {
+    this.state.toggle===false?this.setState({toggle:true}):this.setState({toggle:false})
+  }
     render() {
         const {students} = this.props.students
       const {classBill} = this.props.classBill
@@ -348,6 +414,12 @@ class Students extends Component {
                 examtotal={examtotal}
                 totalresult={totalresult}
                 percentage={percentage}
+                handleExam={this.handleExam}
+                handleTest={this.handleTest}
+                uploadResult={this.uploadResult}
+                msg={this.props.result.msg}
+                state={this.state}
+                change={this.handleChange}
                 />
             <StudentPage/>
         <StudentCards students={students}/>
@@ -429,4 +501,6 @@ export default connect(mapStateToProps,{addStudent,
 getReceipt,
 firstTerm,
 secondTerm,
-thirdTerm})(Students)
+thirdTerm,
+addResult,
+deleteResult})(Students)

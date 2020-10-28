@@ -40,7 +40,8 @@ class Profile extends Component {
                 number:res.data.number,
                 school_id:res.data.school_id,
                 created:res.data.created,
-                type:res.data.type
+                type:res.data.type,
+                color:res.data.color
             })
             const state= this.state
         })
@@ -115,7 +116,8 @@ class Profile extends Component {
         number,
         school_id,
         created,
-        type
+        type,
+        color
     } = this.state
     const update = {
         clas,
@@ -129,7 +131,8 @@ class Profile extends Component {
         firstName,
         lastName,
         ownerEmail,
-        number
+        number,
+        color
 }
 this.props.updateSchool(update)
 this.props.schoolDetail()

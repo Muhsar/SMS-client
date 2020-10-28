@@ -54,7 +54,11 @@ export const StudentList=({students,update,remove,info,debtor,result})=>{
                       </div>
                       <div class="media-body ml-4">
                         <a href="#" class="name h6 mb-0 text-sm">{student.surname} {student.name}</a>
-                        <small class="d-block font-weight-bold">{student.student_id}</small>
+                        {
+                          decode.type==='owner' ?
+                          <small class="d-block font-weight-bold">{student.student_id}</small>
+                          : null
+                        }
                       </div>
                     </div>
                   </th>
@@ -68,7 +72,7 @@ export const StudentList=({students,update,remove,info,debtor,result})=>{
                     {student.religion}
                   </td>
                   <td scope='col'>
-                    <p href='#debtorModal' data-toggle='modal' onClick={()=>debtor(student.student_id)} className={student.feeStatus==='debtor' ? 'badge badge-soft-danger' : 'badge badge-soft-success'}>
+                    <p href='#debtorModal' data-toggle={decode.type==='owner' ? 'modal' : null} onClick={decode.type==='owner' ? ()=>debtor(student.student_id) : null} className={student.feeStatus==='debtor' ? 'badge badge-soft-danger' : 'badge badge-soft-success'}>
                     {student.feeStatus}
                     </p>  
                     </td>
@@ -85,12 +89,17 @@ export const StudentList=({students,update,remove,info,debtor,result})=>{
                       <a href="#resultModal" onClick={()=>result(student.student_id)} class="action-item mr-2" data-toggle="modal" >
                         <i class="far fa-list-alt"></i>
                       </a>
+                        {decode.type==='owner' ?
+                        <>
                       <a href="#updateStudent" class="action-item mr-2" onClick={()=>update(student.student_id)} data-toggle="modal">
                         <i class="far fa-pencil-alt"></i>
                       </a>
                       <a href="#" class="action-item text-danger mr-2" onClick={()=>remove(student.student_id)} data-toggle="tooltip" >
                         <i class="far fa-trash"></i>
                       </a>
+                      </>
+                      : null
+}
                     </div>
                   </td>
                 </tr>
@@ -114,6 +123,8 @@ export const AllNews=({news,remove,update})=>{
     <div className="card-header">
       <div className="row">
         <div className="col"></div>
+      {
+        decode.type==='owner' ?
         <div className="col text-right">
               <button type='button' class="action-item text-danger mr-2" onClick={()=>remove(news._id)}>
                         <i class="far fa-trash"></i>
@@ -122,6 +133,8 @@ export const AllNews=({news,remove,update})=>{
                         <i class="far fa-pencil-alt"></i>
                       </a>
               </div>
+              : null
+              }
       </div>
     </div>
         <div class="animate-this text-white">

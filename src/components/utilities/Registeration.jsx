@@ -227,7 +227,12 @@ export const OwnerRegistration=({submit,
       
           </div>
         </div>
-        
+        <div className="form-group">
+          <label htmlFor="color" className="form-control-label">
+            Add Preferred Color
+            </label>
+            <input type="color" onChange={handleChange} name='color' id='color' className="form-control form-control-xl form-control-emphasized"/>
+            </div>
           <button class="btn btn-primary btn-block" type="submit" value="Register">Register →</button>
         </form>
     )

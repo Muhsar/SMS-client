@@ -49,7 +49,8 @@ class Teachers extends Component {
       email:this.state.email,
       number:this.state.number,
       school_id:decode.school_id,
-      image:this.state.image
+      image:this.state.image,
+      color:decode.color
     }
   this.props.addTeacher(teacher)
   this.props.getTeachers()

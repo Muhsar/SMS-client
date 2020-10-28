@@ -6,14 +6,12 @@ import SignUp from './components/SignUp'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import SideNav from './components/SideNav'
-import TopNav from './components/TopNav';
 import Students from './components/Students'
 import News from './components/News';
 import Bills from './components/Bill';
 import Dashboard from './components/Dashboard';
 import Teachers from './components/Teachers';
 import { ptfNotifications } from './notification';
-import { OwnerServer } from './servers';
 import PTF from './components/PTF';
 import Profile from './components/Profile';
 import DebtManagement from './components/DebtManagement';
@@ -27,9 +25,7 @@ export default class App extends Component {
       return config;
     });
     axios.defaults.headers.common['Authorization'] = localStorage.token
-    if(localStorage.token){
-    }
-    ptfNotifications()
+    
     
   }
   
@@ -48,16 +44,26 @@ render() {
     )
     const teacher=(
       <Switch>
-        <Route exact path ='/' component={PTF}/>
+        
+        <Route exact path ='/' component={Dashboard}/>
+        <Route exact path ='/profile' component={Dashboard}/>
+        <Route  path='/news' component={News}/>
+        <Route  path='/students' component={Students}/>
+        <Route  path='/ptf' component={PTF}/>
+        <Route path='/debt' component={DebtManagement}/>
       </Switch>
     )
     const parent=(
       <Switch>
+        
         <Route exact path ='/' component={PTF}/>
+        <Route  path='/news' component={News}/>
+        <Route  path='/ptf' component={PTF}/>
       </Switch>
     )
     const owner=(
   <Switch>
+    
     <Route exact path ='/' component={Profile}/>
           <Route  path='/students' component={Students}/>
           <Route  path='/teachers' component={Teachers}/>
@@ -70,6 +76,7 @@ render() {
 )
 const userRoutes = localStorage.token ? decode.type==='owner' ? owner : decode.type==='parent' ? parent : teacher : null
     return (
+      <div className="application application-offset ready sidenav-pinned" style={{backgroundColor:localStorage.token ? decode.color==='no color' ? '#6e30ff' : decode.color : '#6e30ff',height:'430px'}}>
         <div className='container-fluid container-application'>
       <Router>
           {localStorage.token ? <SideNav/> : null}
@@ -78,7 +85,8 @@ const userRoutes = localStorage.token ? decode.type==='owner' ? owner : decode.t
 
 
       </Router>
-        </div>
+      </div>
+      </div>
     )
   }
 }

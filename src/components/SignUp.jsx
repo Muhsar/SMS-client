@@ -36,7 +36,8 @@ class SignUp extends Component {
     confirmPassword:'',
     passwordError:'',
     noLogo:false,
-    nextStage:false
+    nextStage:false,
+    color:'no color'
   }
   handleChange=e=>{
     this.setState({[e.target.name]:e.target.value})
@@ -91,7 +92,8 @@ class SignUp extends Component {
     lastName,
     ownerEmail,
     number,
-    confirmPassword
+    confirmPassword,
+    color
   } = this.state
       e.preventDefault()
       const {teacher} = this.props.teacher
@@ -122,7 +124,8 @@ class SignUp extends Component {
         firstName,
         lastName,
         ownerEmail,
-        number
+        number,
+        color
       }
       :
       null
@@ -158,10 +161,15 @@ class SignUp extends Component {
   checkId=e=>{
     const {student} = this.props.student
     e.preventDefault()
-    if(student!==null){
-    student.student_id!==this.state.student_id ? this.setState({reg:false, error:'No Student With that ID or the account has been registered'}) : this.setState({reg:true})}
+    if(student){
+    student.student_id!==this.state.student_id 
+    ? 
+    this.setState({reg:false, error:'No Student With that ID or the account has been registered'}) : this.setState({reg:true})}
     else if(this.state.student_id===''){
       this.setState({reg:false,error:"Input the Child's ID to continue registration"})
+    }
+    else if(!student){
+      this.setState({reg:false,error:'invalid student_id'})
     }
     console.log((this.state.student_id).length)
   }
@@ -219,6 +227,8 @@ uploadImage=async e =>{
   console.log(file.secure_url)
 }
     render() {
+      const {student} = this.props.student
+      console.log(student,this.state.student_id)
         return (
           <div className="main-content position-relative">
 

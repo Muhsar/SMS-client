@@ -10,7 +10,7 @@ class TopNav extends Component {
   render() {
     const decode = jwt_decode(localStorage.token)
     return (
-      <nav class="navbar navbar-main navbar-expand-lg navbar-dark bg-primary navbar-border" id="navbar-main">
+      <nav class="navbar navbar-main navbar-expand-lg navbar-dark navbar-border" id="navbar-main" style={{backgroundColor:decode.color==='no color' ? '#6e30ff' : decode.color}}>
         <div class="container-fluid">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main-collapse" aria-controls="navbar-main-collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -26,27 +26,37 @@ class TopNav extends Component {
             <ul class="navbar-nav align-items-lg-center">
              
               <li class="border-top opacity-2 my-2"></li>
-              
+              <li class="nav-item">
+                <Link to='/profile' class="nav-link nav-link-icon">
+                  <i className="far fa-sm fa-home-alt"></i> Home
+                </Link>
+              </li>
               <li class="nav-item">
                 <Link to='/students' class="nav-link nav-link-icon">
                   <i className="far fa-sm fa-user-graduate"></i> Students
                 </Link>
               </li>
+{ decode.type==='owner' ?
               <li class="nav-item">
                 <Link to='/teachers' class="nav-link nav-link-icon">
                   <i className="far fa-sm fa-user-tie"></i> Teachers
                 </Link>
               </li>
+              : null
+}
               <li class="nav-item">
                 <Link to='/news' class="nav-link nav-link-icon">
                   <i className="far fa-sm fa-newspaper"></i> News
                 </Link>
               </li>
+{ decode.type==='owner' ?
               <li class="nav-item">
                 <Link to='/bills' class="nav-link nav-link-icon">
                   <i className="far fa-sm fa-money-bill"></i> Bills
                 </Link>
               </li>
+              : null
+}              
               <li class="nav-item">
                 <Link to='/ptf' class="nav-link nav-link-icon">
                   <i className="far fa-sm fa-comment-alt-dots"></i> PTF
@@ -72,21 +82,32 @@ class TopNav extends Component {
                 <a class="nav-link pr-lg-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="media media-pill align-items-center">
                     <span class="avatar">
-                      <img alt="" src={decode.image}/>
+                    {
+            decode.image==='no image' ? 
+            <span className=" avatar  bg-primary rounded-circle shadow hover-shadow-lg">
+                <span className='text-white'>
+                    {(decode.type!=='owner' ? decode.surname : decode.lastName).slice(0,1)}{(decode.type!=='owner' ? decode.name : decode.firstName).slice(0,1)}
+                    </span>
+            </span>
+            :
+        <img alt="" src={decode.image} class=" avatar rounded-circle shadow hover-shadow-lg"/>
+        }
                     </span>
                     <div class="ml-2 d-none d-lg-block">
-                      <span class="mb-0 text-sm  font-weight-bold">{decode.lastName+' '+decode.firstName}</span>
+                      <span class="mb-0 text-sm  font-weight-bold">{(decode.type!=='owner' ? decode.surname : decode.lastName)+' '+(decode.type!=='owner' ? decode.name : decode.firstName)}</span>
                     </div>
                   </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right dropdown-menu-arrow">
-                  <h6 class="dropdown-header px-0">Hi, {decode.firstName}!</h6>
+                  <h6 class="dropdown-header px-0">Hi, {decode.type!=='owner' ? decode.name : decode.firstName}!</h6>
+
                   <Link to='/profile' class="dropdown-item">
                     <i class="far fa-user-ninja"></i>
                     <span>My profile</span>
                   </Link>
+
                   <div class="dropdown-divider"></div>
-                  <Link to='#' class="dropdown-item">
+                  <Link onClick={this.logOut} class="dropdown-item">
                     <i class="far fa-sign-out-alt"></i>
                     <span>Logout</span>
                   </Link>

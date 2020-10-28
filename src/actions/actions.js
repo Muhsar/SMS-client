@@ -53,8 +53,12 @@ import { Loading,
      Sss1,
      Sss2,
      Sss3,
-     Typing
+     Typing,
+     DeleteResult,
+     AddResult
     } from './types';
+    import jwt_decode from 'jwt-decode'
+    const decode = localStorage.token ? jwt_decode(localStorage.token) : null
     export const typingState=status=>dispatch=>{
       dispatch({
         type:Typing,
@@ -195,6 +199,13 @@ import { Loading,
          payload:res.data
        }))
      }
+     export const schoolData=(id)=>dispatch=>{
+      axios.get(`${OwnerServer}/school/${id}`)
+      .then(res=>dispatch({
+        type:OwnerDetail,
+        payload:res.data
+      }))
+    }
      export const updateSchool=data=>dispatch=>{
       axios.post(`${OwnerServer}/account`,data)
       .then(res=>
@@ -259,12 +270,13 @@ import { Loading,
         }))
     }
      export const getStudentBill =()=>(dispatch)=>{
-      axios.get(`${OwnerServer}/studentbill`)
+      axios.get(decode.type==='owner' ? `${OwnerServer}/studentbill` : `${TeacherServer}/studentbill`)
         .then(res=>dispatch({
           type:GetStudentBill,
           payload:res.data
         }))
     }
+    
     export const addStudentBill = (studentBill) => (
       dispatch
     ) => {
@@ -405,7 +417,7 @@ export const teacherDetail = (id) => (dispatch) => {
   export const getStudents = () => (dispatch) => {
       dispatch(setLoading());
       axios
-        .get(`${OwnerServer}/students`)
+        .get(decode.type==='owner' ? `${OwnerServer}/students` : `${TeacherServer}/students`)
           .then(res =>
             dispatch({
               type: GetStudent,
@@ -640,3 +652,30 @@ export const teacherDetail = (id) => (dispatch) => {
       type: Loading
     };
   };
+  export const addResult = (result) => (
+    dispatch
+  ) => {
+    axios.post(`${TeacherServer}/result`, result)
+      .then(res=>{
+      dispatch({
+        type:AddResult,
+        payload:res.data.error ? '' : res.data,
+        msg:(res.data.error)?(res.data.error):('')
+      })
+      })
+    }
+    export const getResult =(id)=>(dispatch)=>{
+      axios.get(`${TeacherServer}/result/`+id)
+      .then(res=>dispatch({
+        type:GetResult,
+        payload:res.data
+      }))
+    }
+    export const deleteResult =(id)=>(dispatch)=>{
+      axios.delete(`${TeacherServer}/result/`+id)
+      .then(res=>dispatch({
+        type:DeleteResult,
+        payload:id
+      }))
+    }
+    

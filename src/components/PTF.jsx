@@ -18,7 +18,7 @@ export class PTF extends Component {
       componentDidMount() {
       this.props.getChat()
       const decode = jwt_decode(localStorage.token)
-      let server = "https://schmanagerserver.herokuapp.com/";
+      const server = process.env.NODE_ENV==='production' ? 'https://schmanagerserver.herokuapp.com/' : 'http://localhost:5000/'
       const school_id = decode.school_id
       this.socket = io(server, {query:{school_id}});
       

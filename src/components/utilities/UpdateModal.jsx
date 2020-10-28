@@ -4,7 +4,123 @@ import { AllClasses } from '../../classes';
 import { Nigeria } from '../../nigeria-state-and-lgas';
 import { StudentReceipt, StudentDebt, StudentResult } from './Cards';
 const decode = localStorage.token ? jwt_decode(localStorage.token) : null
+export const ProfileTabs=({upload,update,state,uploadImage,imageUpload,change})=>{
+  return(
+  <div class="modal modal-dark fade" 
+                  id="editProfile" 
+                  tabindex="-1" 
+                  role="dialog" 
+                  aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
 
+    <div class="modal-body">
+                          <nav class="nav nav-pills nav-pills-icon nav-justified">
+    <a class="nav-item nav-link py-3 active" data-toggle='tab' href="#changeImage">
+    <span class="d-block">
+            <i class="far fa-file-image fa-2x"></i>
+        </span>
+        <span class="d-none d-sm-block mt-2">Change Image</span>
+    </a>
+    <a  class="nav-item nav-link py-3" data-toggle='tab' href="#changePassword">
+    <span class="d-block">
+            <i class="far fa-code fa-2x"></i>
+        </span>
+        <span class="d-none d-sm-block mt-2">Change Password</span>
+    </a>
+    </nav>
+    <div class="tab-content">
+  <div class="tab-pane container active" id="changeImage">
+  {
+      state.msg ?
+      <div className="alert alert-success">
+        {state.msg}
+        </div>
+        :
+        null
+    }
+    <UpdateProfileImage
+    upload={upload}
+    state={state}
+    uploadImage={uploadImage}
+    imageUpload={imageUpload}
+    />
+  </div>
+  <div className="tab-pane container fade" id="changePassword">
+    {
+      state.error ?
+      <div className="alert alert-danger">
+        {state.error}
+        </div>
+        :
+        null
+    }
+    {
+      state.msg ?
+      <div className="alert alert-success">
+        {state.msg}
+        </div>
+        :
+        null
+    }
+    <UpdateProfilePassword
+    change={change}
+    update={update}
+    state={state}
+    />
+  </div>
+  </div>
+                         </div>
+                          </div>
+                          </div>
+                          </div>
+)
+}
+export const UpdateProfileImage=({upload,state,uploadImage,imageUpload})=>{
+  return(
+      <form onSubmit={upload}>
+        <div className="form-group">
+          {
+            state.image==='no image' ?
+            <div className="row">
+              <div className="col mx-auto text-center">
+              <h1 onClick={imageUpload} className="h1 text-xl-center mx-auto avatar bg-primary text-white avatar-xl rounded-circle hover-shadow-lg hover-translate-y-n10">
+                {decode.surname.slice(0,1)+decode.name.slice(0,1)}
+              </h1>
+              <input type="file" name='image' id='updateImage' style={{display:'none'}} onChange={uploadImage} className="form-control-file form-control form-control-emphasized"/>
+              </div>
+            </div>
+            :
+            <>
+          <img src={state.image} alt="" onClick={imageUpload} className="avatar avatar-xl mx-auto d-block img-thumbnail"/>
+          <input type="file" name='image' id='updateImage' style={{display:'none'}} onChange={uploadImage} className="form-control-file form-control form-control-emphasized"/>
+          </>
+          }
+          </div>
+          <button className="btn-outline-secondary rounded-pill btn-block btn" type='submit'><i className="fa fa-file-upload"></i> Upload</button>
+      </form>
+  )
+}
+export const UpdateProfilePassword=({change,update,state})=>{
+  return(
+    <form onSubmit={update}>
+      <div className="form-group">
+        <label htmlFor="" className="form-control-label text-white">Old Password</label>
+        <input type="password" required name='oldPassword' onChange={change} value={state.oldPassword} className="form-control form-control-emphasized"/>
+        </div>
+      <div className="form-group">
+        <label htmlFor="" className="form-control-label text-white">New Password</label>
+        <input type="password" required name='newPassword' onChange={change} value={state.newPassword} className="form-control form-control-emphasized"/>
+        </div>
+      <div className="form-group">
+        <label htmlFor="" className="form-control-label text-white">Confirm Password</label>
+        <input type="password" required onChange={change} name='confirmPassword' value={state.confirmPassword} className="form-control form-control-emphasized"/>
+        </div>
+        <input type="color" name="color" onChange={change} className="form-control"/>
+        <button className="btn-outline-secondary rounded-pill btn-block btn" type='submit'>Update</button>
+    </form>
+  )
+}
 export const UpdateBill=({submit,change,state,classBill,remove,add})=>{
     return(
         <div class="modal fade" id="updateBill" tabindex="-1" role="dialog" aria-hidden="true">
@@ -442,7 +558,7 @@ export const ResultModal=({student,
   testtotal,
   examtotal,
   totalresult,
-  percentage})=>{
+  percentage,handleTest,handleExam,uploadResult,msg,change,state})=>{
   return(
     <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -472,7 +588,13 @@ export const ResultModal=({student,
     examtotal={examtotal}
     totalresult={totalresult}
     percentage={percentage}
-    term={'1st Term'}
+    term={'1stTerm'}
+    handleExam={handleExam}
+                handleTest={handleTest}
+                uploadResult={uploadResult}
+                msg={msg}
+                state={state}
+                change={change}
     />
   </div>
   <div class="tab-pane container fade" id="second">
@@ -483,7 +605,13 @@ export const ResultModal=({student,
     examtotal={examtotal}
     totalresult={totalresult}
     percentage={percentage}
-    term={'2nd Term'}
+    term={'2ndTerm'}
+    handleExam={handleExam}
+                handleTest={handleTest}
+                uploadResult={uploadResult}
+                msg={msg}
+                state={state}
+                change={change}
     />
   </div>
   <div class="tab-pane container fade" id="third">
@@ -494,7 +622,13 @@ export const ResultModal=({student,
     examtotal={examtotal}
     totalresult={totalresult}
     percentage={percentage}
-    term={'3rd Term'}
+    term={'3rdTerm'}
+    handleExam={handleExam}
+                handleTest={handleTest}
+                uploadResult={uploadResult}
+                msg={msg}
+                state={state}
+                change={change}
     />
   </div>
 </div>
@@ -661,7 +795,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
     <form onSubmit={updatePassword}>
                     {
                       msg ?
-                      <div className="alert alert-success alert-dismissible">
+                      <div className="alert alert-success">
                         <button className="btn btn-action-label" data-dismiss='alert'>
                           &times;
                           </button>
@@ -671,7 +805,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
                     }
                     {
                       error ?
-                      <div className="alert alert-danger alert-dismissible">
+                      <div className="alert alert-danger">
                         <button className="btn btn-action-label" data-dismiss='alert'>
                           &times;
                           </button>
@@ -686,7 +820,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
                         <input required onChange={change} value={state.oldPassword} name='oldPassword' class="form-control form-control-emphasized" type="password"/>
                         {
                           state.passwordUpdateError === "Password Incorrect" ?
-                          <div className="alert alert-danger alert-dismissible">
+                          <div className="alert alert-danger">
                             <button className="btn btn-action-label" onClick={setNull}>
                               &times;
                               </button>
@@ -713,7 +847,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
                     </div>
                     {
                           state.passwordUpdateError === "Passwords do not Match" ?
-                          <div className="alert alert-danger alert-dismissible col-md-12">
+                          <div className="alert alert-danger col-md-12">
                             <button className="btn btn-action-label" onClick={setNull}>
                               &times;
                               </button>
@@ -747,7 +881,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
                       <form onSubmit={deleteAccount} class="form-danger">
                       {
                       msg ?
-                      <div className="alert alert-success alert-dismissible">
+                      <div className="alert alert-success">
                         <button className="btn btn-action-label" data-dismiss='alert'>
                           &times;
                           </button>
@@ -757,7 +891,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
                     }
                     {
                       error ?
-                      <div className="alert alert-danger alert-dismissible">
+                      <div className="alert alert-danger">
                         <button className="btn btn-action-label" data-dismiss='alert'>
                           &times;
                           </button>
@@ -779,7 +913,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
                               <input  name='verifyDelete' onChange={change} required class="form-control form-control-emphasized" type="text"/>
                               {
                               state.deleteMessage === 'text must be in lower case or text does not match' ?
-                              <div className="alert alert-danger alert-dismissible"><button class='btn btn-action-label' data-dismiss='alert'
+                              <div className="alert alert-danger"><button class='btn btn-action-label' data-dismiss='alert'
                               onClick={setNull}
                               >&times;</button>{state.deleteMessage}</div>
                               :
@@ -791,7 +925,7 @@ export const PasswordUpdate=({state,msg,error,updatePassword,deleteAccount,chang
                               <input  onChange={change} name='password' required class="form-control form-control-emphasized" type="password"/>
                               {
                               state.deleteMessage === "Password Incorrect or doesn't match" ?
-                              <div className="alert alert-danger alert-dismissible"><button class='btn btn-action-label' data-dismiss='alert'
+                              <div className="alert alert-danger"><button class='btn btn-action-label' data-dismiss='alert'
                               onClick={setNull}
                               >&times;</button>{state.deleteMessage}</div>
                               :
@@ -1010,6 +1144,12 @@ export const SchoolUpdate=({submit,
     </div>
         </div>
       </div>
+      <div className="form-group">
+          <label htmlFor="color" className="form-control-label">
+            Add Preferred Color
+            </label>
+            <input type="color" value={state.color} onChange={handleChange} name='color' id='color' className="form-control form-control-xl form-control-emphasized"/>
+            </div>
         <button class="btn btn-primary btn-block" type="submit" value="Update">Update</button>
         {
           error ?

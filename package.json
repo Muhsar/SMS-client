@@ -13,7 +13,7 @@
       "icon": "build/icons"
     },
     "win": {
-      "icon": "build/icons"
+      "icon": "build/icons/icon.png"
     }
   },
   "dependencies": {
@@ -60,7 +60,7 @@
     "windows": "electron-builder --windows",
     "electron-build": "electron-builder --linux deb",
     "fullbuild":"yarn run windows && yarn run electron-build",
-    "allbuild": "yarn run build && yarn run electron-build",
+    "allbuild": "yarn run build && yarn run fullbuild",
     "desktop": "wait-on http://localhost:3000 && electron .",
     "start": "concurrently \"BROWSER=none yarn run react-start\" \"wait-on http://localhost:3000 && electron .\""
   },

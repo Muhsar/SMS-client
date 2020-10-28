@@ -418,7 +418,7 @@ export const BillHeader=({search})=>{
         </div>
   )
 }
-export const StudentResult=({student,result,testtotal,examtotal,totalresult,percentage,term})=>{
+export const StudentResult=({student,result,testtotal,examtotal,totalresult,percentage,term,handleTest,handleExam,uploadResult,msg,change,state})=>{
   return(
     <div className="card">
       <div class="card-header user-header alt bg-gradient-dark">
@@ -470,6 +470,77 @@ export const StudentResult=({student,result,testtotal,examtotal,totalresult,perc
       </table>
       </div>
       <br/>
+      {
+        decode.type!=='teacher' ? null :
+        <>
+        {
+          (state.msg==='')?(
+            <div></div>
+          ):(
+            <div className='alert alert-danger'>{state.msg}</div>
+          )
+        }
+        <form className='container' onSubmit={uploadResult}>
+        <h4 className="text-center">Add Result <i class='fa fa-tag'/></h4>
+
+        <div className='row'>
+          <div className="col-md-12"><input type="text" disabled name='term' value={term} className="form-control form-control-emphasized"/></div>
+          <br/>
+        <div className='col-md-4'>
+
+        <input value={state.subject} onChange={change} placeholder='Subject' className='form-control' type="text" name="subject" />
+        </div>
+        <div className='col-md-2'>
+        <input value={state.test} onChange={handleTest} placeholder='Test' className='form-control' type="number" name="test" />
+        </div>
+        <div className='col-md-2'>
+        <input value={state.exam} onChange={handleExam} placeholder='Exam' className='form-control' type="number" name="exam" />
+        </div>
+        <div className='col-md-2'>
+        <input disabled value={state.total} placeholder='Total' className='form-control' type="number" name="total" />
+        </div>
+        </div>
+        <br/>
+        <div className='row'>
+        <div className='col'>
+        <select class='form-control' name='grade' value={state.grade} onChange={change}>
+        <option>Grade</option>
+        <option>A1</option>
+        <option>B2</option>
+        <option>B3</option>
+        <option>C4</option>
+        <option>C5</option>
+        <option>C6</option>
+        <option>D7</option>
+        <option>E8</option>
+        <option>F9</option>
+        </select>
+        </div>
+        <div className='col'>
+        <select class='form-control' value={state.remarks} name='remarks' onChange={change}>
+        <option>Remarks</option>
+        <option>Excellent</option>
+        <option>V.good</option>
+        <option>Good</option>
+        <option>Fair</option>
+        <option>Poor</option>
+        <option>V.poor</option>
+        </select>
+        </div>
+        </div>
+        <br/>
+        <input type="submit" value="Upload" className='btn btn-outline-primary btn-block' />
+        </form>
+        {
+          (msg==='')?(
+            <div></div>
+          ):(
+            <div className='alert alert-danger'>{msg}</div>
+          )
+        }
+
+        </>
+      }
     </div>
   )
 }
@@ -718,12 +789,17 @@ export const ManagementNavs=({})=>{
         </span>
         <span class="d-none d-sm-block mt-2">Table</span>
     </a>
-    <a class="nav-item nav-link py-3" data-toggle='tab' href="#payment">
+    {
+decode.type==='owner' ?
+      <a class="nav-item nav-link py-3" data-toggle='tab' href="#payment">
     <span class="d-block">
             <i class="far fa-th-list fa-2x"/>
         </span>
         <span class="d-none d-sm-block mt-2">Payment History</span>
     </a>
+    :
+    null
+    }
 </nav>
   )
 }
@@ -880,6 +956,49 @@ export const TableManagement=({data})=>{
                 </td>
                 <td scope='col' class='budget'>
                   {data.debtor}
+                </td>
+              </tr>
+        )
+      })
+      : null
+    }
+              
+              
+            </tbody>
+          </table>
+          </div>
+  )
+}
+export const TeacherTableManagement=({students})=>{
+  return(
+    <div class="table-responsive" >
+            <table class="table align-items-center" id='myTable'>
+              <thead>
+                <tr>
+                <th scope="col">
+                    Full Name
+                    </th>
+                    <th scope="col">
+                    Amount Paid 
+                    </th>
+                    <th scope="col">
+                    Amount Left 
+                    </th>
+                </tr>
+              </thead>
+    <tbody class='list'>
+    {
+      students.length ? students.map(student=>{
+        return(
+          <tr>
+                <th scope="row">
+                  {student.surname+' '+student.name}
+                </th>
+                <td >
+                  {student.amountPaid}
+                </td>
+                <td scope='col' class='budget'>
+                  {student.fees-student.amountPaid}
                 </td>
               </tr>
         )

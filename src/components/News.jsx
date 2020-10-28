@@ -20,8 +20,8 @@ class News extends Component {
   componentDidMount() {
       this.props.getNews()
       const decode = jwt_decode(localStorage.token)
-  let server = "https://schmanagerserver.herokuapp.com/";
-  const school_id = decode.school_id
+      const server = process.env.NODE_ENV==='production' ? 'https://schmanagerserver.herokuapp.com/' : 'http://localhost:5000/'
+      const school_id = decode.school_id
   this.socket = io(server, {query:{school_id}});
   
   this.socket.on("viewNotice", info => {
@@ -134,10 +134,15 @@ handleSearch=()=>{
         const {news} = this.props.news
         const {info} = this.props.info
         console.log(this.props)
+        const decode = jwt_decode(localStorage.token)
         return (
           <div className="main-content position-relative">
                 <TopNav/>
             <div class="page-content">
+                {
+                decode.type==='owner' 
+                ?
+                <>
                 <NewsPage/>
                 <NewsCards news={news}/>
                 <UploadNews
@@ -155,6 +160,10 @@ handleSearch=()=>{
                 image={this.imageUpload}
                 change={this.handleChange}
                 />
+                </>
+                : 
+                null
+                }
                 <div class="card">
                     <NewsFeedHeader
                     newest={this.sortNewest}
