@@ -30,7 +30,7 @@ export const OwnerRegistration=({submit,
                className='mx-auto d-block rounded-circle img-fluid'
                 onClick={logoUpload}/>
           <p className='text-center'>Click to Add School Logo</p>
-          <input onChange={uploadLogo} type="file" id="newLogo" name='image' style={{display: "none"}}/>
+          <input onChange={uploadLogo} type="file" id="newLogo" name='logo' style={{display: "none"}}/>
           </div>
         ):(
           <div className='form-group'>
@@ -41,7 +41,7 @@ export const OwnerRegistration=({submit,
             style={{width:'100px',height:'100px'}} 
             className='mx-auto d-block rounded-circle img-fluid' 
             onClick={logoUpload}/>
-          <input required onChange={uploadLogo} type="file" id="newLogo" name='image' style={{display: "none"}}/>
+          <input required onChange={uploadLogo} type="file" id="newLogo" name='logo' style={{display: "none"}}/>
           </div>
         )
       }
