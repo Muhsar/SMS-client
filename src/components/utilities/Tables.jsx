@@ -31,7 +31,7 @@ export const ResultTable=({result,toggleDelete})=>{
     </>
   )
 }
-export const StudentList=({students,update,remove,info,debtor,result})=>{
+export const StudentList=({students,update,remove,info,debtor,result,progress})=>{
     return(
       <tbody class='list' id='sortTable'>
       {
@@ -93,6 +93,9 @@ export const StudentList=({students,update,remove,info,debtor,result})=>{
                         <>
                       <a href="#updateStudent" class="action-item mr-2" onClick={()=>update(student.student_id)} data-toggle="modal">
                         <i class="far fa-pencil-alt"></i>
+                      </a>
+                      <a href="#studentAttendance" class="action-item mr-2" onClick={()=>progress(student.student_id)} data-toggle="modal">
+                        <i class="far fa-abacus"></i>
                       </a>
                       <a href="#" class="action-item text-danger mr-2" onClick={()=>remove(student.student_id)} data-toggle="tooltip" >
                         <i class="far fa-trash"></i>

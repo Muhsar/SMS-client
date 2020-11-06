@@ -1168,7 +1168,7 @@ export const SchoolUpdate=({submit,
 }
 export const StudentAttendance=({student,progress})=>{
 return(
-  <div class="modal modal-dark fade" 
+  <div class="modal fade" 
                   id="studentAttendance" 
                   tabindex="-1" 
                   role="dialog" 
@@ -1178,8 +1178,17 @@ return(
                           <div className="modal-header">
                           <div class="row align-items-center">
                 <div class="media mt-4 align-items-center mx-auto">
-                
-                  <img alt="" src={progress ? progress.image : null} class="avatar avatar-lg"/>
+                {
+                          progress ? progress.image==='no image' ? 
+                          <div className="avatar avatar-xl bg-primary rounded-circle">
+                            {progress.fullName.slice(0,1)}
+                          </div>
+                          :
+                        <div class="avatar-parent-child">
+                          <img alt="" src={progress.image} class="avatar avatar-xl rounded-circle"/>
+                        </div>
+                        : null
+                        }
                   <div class="media-body pl-3">
                   <div class="text-lg text-center my-0">{progress ? progress.fullName : null}</div>
                   <div class="text-lg text-center my-0">{progress ? progress.schoolName : null}</div>

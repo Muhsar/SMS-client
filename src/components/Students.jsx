@@ -10,7 +10,7 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import { OwnerServer } from '../servers';
 import PropTypes from 'prop-types'
-import { DebtorModal, ResultModal, UpdateStudent } from './utilities/UpdateModal';
+import { DebtorModal, ResultModal, StudentAttendance, UpdateStudent } from './utilities/UpdateModal';
 import { addStudent,
   getClassBill,
  addStudentBill,
@@ -26,7 +26,8 @@ firstTerm,
 secondTerm,
 thirdTerm,
 addResult,
-deleteResult
+deleteResult,
+getAttendance
  } from '../actions/actions';
 import { StudentInfo } from './utilities/Details';
 import { Link } from 'react-router-dom';
@@ -294,7 +295,11 @@ class Students extends Component {
   handleExam=e=> {
     this.setState({exam:e.target.value,total:(Number(e.target.value)+Number(this.state.test))})
   }
-
+studentProgress=id=>{
+  this.props.studentDetail(id)
+  this.props.getAttendance(id)
+  this.props.getStudents()
+}
   uploadResult=e=> {
     e.preventDefault()
     const {student} = this.props.student
@@ -343,7 +348,7 @@ class Students extends Component {
   }
     render() {
         const {students} = this.props.students
-      const {classBill} = this.props.classBill
+      const {progress} = this.props.progress
       const {student} = this.props.student
       const {debtor} = this.props.debtor
       const {receipt} = this.props.receipt
@@ -364,7 +369,7 @@ class Students extends Component {
     const examtotal = sum(result.map(result=>result.exam))
     const testtotal = sum(result.map(result=>result.test))
     const percentage = totalresult/result.length
-    
+    console.log(progress)
       return (
         <div className="main-content position-relative">
                 <TopNav/>
@@ -421,6 +426,7 @@ class Students extends Component {
                 state={this.state}
                 change={this.handleChange}
                 />
+                <StudentAttendance student={student} progress={progress}/>
             <StudentPage/>
         <StudentCards students={students}/>
         <div class="card">
@@ -451,6 +457,7 @@ class Students extends Component {
               info={this.openStudentInfo}
               debtor={this.openDebtorModal}
               result={this.openResultModal}
+              progress={this.studentProgress}
               />
             </table>
           </div>
@@ -475,7 +482,9 @@ Students.propTypes = {
   receipt: PropTypes.object.isRequired,
   firstTerm: PropTypes.func.isRequired,
   secondTerm: PropTypes.func.isRequired,
-  thirdTerm: PropTypes.func.isRequired
+  thirdTerm: PropTypes.func.isRequired,
+  getAttendance: PropTypes.func.isRequired,
+  progress: PropTypes.object.isRequired
 }
 const mapStateToProps= state => {
     return{
@@ -484,7 +493,8 @@ const mapStateToProps= state => {
       student:state.student,
       debtor:state.debtor,
       receipt:state.receipt,
-      result: state.result
+      result: state.result,
+      progress: state.progress
     }
 };
 export default connect(mapStateToProps,{addStudent,
@@ -503,4 +513,6 @@ firstTerm,
 secondTerm,
 thirdTerm,
 addResult,
-deleteResult})(Students)
+deleteResult,
+getAttendance
+})(Students)
